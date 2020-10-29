@@ -42,7 +42,8 @@ class TemperaturePage extends StatelessWidget {
                           startWidth: 0.03,
                           sizeUnit: GaugeSizeUnit.factor,
                           endWidth: 0.03,
-                          gradient: SweepGradient(stops: <double>[
+                          gradient: SweepGradient(
+                            stops: <double>[
                             0.2,
                             0.5,
                             0.75
@@ -50,7 +51,9 @@ class TemperaturePage extends StatelessWidget {
                             Colors.blue[200],
                             Colors.orange[200],
                             Colors.red[200]
-                          ]))
+                          ]
+                        )
+                      )
                     ],
                     annotations: <GaugeAnnotation>[
                       GaugeAnnotation(
@@ -98,15 +101,19 @@ class TemperaturePage extends StatelessWidget {
                           startWidth: 0.1,
                           sizeUnit: GaugeSizeUnit.factor,
                           endWidth: 0.1,
-                          gradient: SweepGradient(stops: <double>[
-                            0.4,
-                            0.65,
-                            0.75
-                          ], colors: <Color>[
-                            Colors.blue[200],
-                            Colors.orange[200],
-                            Colors.red[200]
-                          ]))
+                          gradient: SweepGradient(
+                            stops: <double>[
+                              0.4,
+                              0.65,
+                              0.75
+                            ], 
+                            colors: <Color>[
+                              Colors.blue[200],
+                              Colors.orange[200],
+                              Colors.red[200]
+                            ]
+                          )
+                      )
                     ],
                     pointers: <GaugePointer>[
                       NeedlePointer(

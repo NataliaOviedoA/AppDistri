@@ -15,9 +15,36 @@ class _ControlPageState extends State<ControlPage> {
   static const String topic = "AcMain";
   static const String onCommand = "Encender";
   static const String offCommand = "Apagar";
+  static const String fanCommand = "FAN";
+  static const String swingCommand = "SWING";
+  static const String masCommand = "MAS";
+  static const String menosCommand = "MENOS";
+  static const String coolCommand = "Cool";
+  static const String heatCommand = "Heat";
+  static const String dryCommand = "Dry";
+
+  bool _powerOn = false;
 
   void _sendMessage(String message) {
     widget.client.publishMessage(topic, message);
+  }
+
+  void _powerAcButton() {
+    setState(() {
+      if (_powerOn) {
+        _sendMessage(offCommand);
+        _powerOn = false;
+      } else {
+        _sendMessage(onCommand);
+        _powerOn = true;
+      }
+    });
+  }
+
+    String _powerValue() {
+      if (_powerOn)
+        return "On";
+      return "Off";
   }
 
   @override
@@ -36,16 +63,20 @@ class _ControlPageState extends State<ControlPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SizedBox(height: 60),
+            SizedBox(height: 40),
+            Text(_powerValue(), 
+                style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white54),
+            ),
+            SizedBox(height: 20),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 ControllerButton(
-                  onPressed: (() => _sendMessage(offCommand)),
+                  onPressed: this._powerAcButton,
                   child: Icon(
                     Icons.power_settings_new, size: 30, color: Colors.red
                   )
-                ),
+                )
               ],
             ),
             SizedBox(height: 50),
@@ -55,7 +86,7 @@ class _ControlPageState extends State<ControlPage> {
                     Align(
                       alignment: Alignment.topLeft,
                       child: ControllerButton(
-                        onPressed: (() => _sendMessage(offCommand)),
+                        onPressed: (() => _sendMessage(fanCommand)),
                         child: Text(
                           "FAN",
                           style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white54),
@@ -65,7 +96,7 @@ class _ControlPageState extends State<ControlPage> {
                     Align(
                       alignment: Alignment.topRight,
                       child: ControllerButton(
-                        onPressed: (() => _sendMessage(offCommand)),
+                        onPressed: (() => _sendMessage(swingCommand)),
                         child: Text(
                           "SWING",
                           style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white54),
@@ -77,19 +108,48 @@ class _ControlPageState extends State<ControlPage> {
                       child: ControllerButton(
                         borderRadius: 10,
                         child: Icon(Icons.arrow_drop_up, size: 30, color: Colors.white),
-                        onPressed: (() => _sendMessage(offCommand)),
+                        onPressed: (() => _sendMessage(masCommand)),
                       ),
                     ),
                     Align(
-                      alignment: Alignment(0, 0.1),
+                      alignment: Alignment(0, 0.6),
                       child: ControllerButton(
                         borderRadius: 10,
                         child: Icon(Icons.arrow_drop_down, size: 30, color: Colors.white),
-                        onPressed: (() => _sendMessage(offCommand)),
+                        onPressed: (() => _sendMessage(menosCommand)),
                       ),
                     )
                   ],
               ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    ControllerButton(
+                      borderRadius: 15,
+                      child: Text(
+                        "Cool",
+                        style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white54),
+                      ),
+                      onPressed: (() => _sendMessage(coolCommand)),
+                    )
+                  ],
+                ),
+                Column(
+                  children: [
+                    ControllerButton(
+                      borderRadius: 15,
+                      child: Text(
+                        "Heat",
+                        style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white54),
+                      ),
+                      onPressed: (() => _sendMessage(heatCommand)),
+                    )
+                  ],
+                )
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -99,16 +159,16 @@ class _ControlPageState extends State<ControlPage> {
                     ControllerButton(
                       borderRadius: 15,
                       child: Text(
-                        "mode".toUpperCase(),
+                        "Dry",
                         style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white54),
                       ),
-                      onPressed: (() => _sendMessage(offCommand)),
+                      onPressed: (() => _sendMessage(dryCommand)),
                     )
                   ],
                 )
               ],
             ),
-            SizedBox(height: 100)
+            SizedBox(height: 50)
           ],
         ),
       ),
@@ -153,7 +213,10 @@ class ControllerButton extends StatelessWidget {
           decoration: BoxDecoration(
             // shape: BoxShape.circle,
             borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
-            gradient: const LinearGradient(begin: Alignment.topLeft, colors: [Color(0XFF303030), Color(0XFF1a1a1a)]),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft, 
+              colors: [Color(0XFF303030), Color(0XFF1a1a1a)]
+              ),
           ),
           child: MaterialButton(
             color: color,
