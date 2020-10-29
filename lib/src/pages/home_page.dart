@@ -64,7 +64,9 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Home"),
+        backgroundColor: Colors.lightBlue[200],
       ),
+      backgroundColor: Colors.lightBlue[50],
       body: _selectedItem == 0
           ? TemperaturePage(
               humidity: _humidity,
